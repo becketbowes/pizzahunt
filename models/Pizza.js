@@ -19,8 +19,8 @@ const PizzaSchema = new Schema({
      toppings: []
 });
 
-//create model
+// maka da model
 const Pizza = model('Pizza', PizzaSchema);
 
-//export model
+// send out da model
 module.exports = Pizza;
