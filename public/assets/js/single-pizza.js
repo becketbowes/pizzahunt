@@ -136,6 +136,18 @@ function handleNewReplySubmit(event) {
   }
 
   const formData = { writtenBy, replyBody };
+
+  fetch(`api/comments/${pizzaId}/${commentId}`, {
+    method: 'PUT',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+  .then(res => {
+    if (!res.ok) { throw new Error('Thatsa not a right'); }
+    res.json()
+  })
+  .then(commentRes => { console.log(commentRes); location.reload(); })
+  .catch(err => { console.log(err) });
 }
 
 $backBtn.addEventListener('click', function() {
