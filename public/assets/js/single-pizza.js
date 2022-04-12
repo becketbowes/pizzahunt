@@ -9,6 +9,21 @@ const $newCommentForm = document.querySelector('#new-comment-form');
 
 let pizzaId;
 
+function getPizza() {
+  //get id
+  const searchParams = new URLSearchParams(document.location.search.substring(1));
+  const pizzaId = searchParams.get('id');
+
+  //get pizzaInfo
+  fetch(`/api/pizzas/${pizzaId}`)
+    .then(res => {
+      if (!res.ok) { throw new Error({ message: 'Something went anutzo' }); } 
+      return res.json(); 
+    })
+    .then(printPizza)
+    .catch(err => { console.log(err); alert('Itsa no good, we go back'); window.history.back(); });
+};
+
 function printPizza(pizzaData) {
   console.log(pizzaData);
 
@@ -87,7 +102,22 @@ function handleNewCommentSubmit(event) {
   }
 
   const formData = { commentBody, writtenBy };
-}
+
+  fetch(`/api/comments/${pizzaId}`, {
+    method: 'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+  .then(res => {
+    if (!res.ok) { throw new Error('somethingsa the matter'); }
+    res.json();
+  })
+  .then(commentRes => {
+    console.log(commentRes);
+    location.reload();
+  })
+  .catch(err => { console.log(err); });
+};
 
 function handleNewReplySubmit(event) {
   event.preventDefault();
@@ -111,6 +141,8 @@ function handleNewReplySubmit(event) {
 $backBtn.addEventListener('click', function() {
   window.history.back();
 });
+
+getPizza();
 
 $newCommentForm.addEventListener('submit', handleNewCommentSubmit);
 $commentSection.addEventListener('submit', handleNewReplySubmit);
