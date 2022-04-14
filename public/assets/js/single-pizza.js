@@ -105,19 +105,27 @@ function handleNewCommentSubmit(event) {
 
   fetch(`/api/comments/${pizzaId}`, {
     method: 'POST',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(formData)
   })
-  .then(res => {
-    if (!res.ok) { throw new Error('somethingsa the matter'); }
-    res.json();
-  })
-  .then(commentRes => {
-    console.log(commentRes);
-    location.reload();
-  })
-  .catch(err => { console.log(err); });
-};
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Thatsa no good!');
+      }
+      response.json();
+    })
+    .then(commentResponse => {
+      console.log(commentResponse);
+      // location.reload();
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 
 function handleNewReplySubmit(event) {
   event.preventDefault();

@@ -3,10 +3,10 @@ const dateFormat = require('../utils/dateFormat');
 
 //create schema
 const PizzaSchema = new Schema({
-    pizzaName: { type: String },
-    createdBy: { type: String },
+    pizzaName: { type: String, required: 'whata da pizza name?', trim: true },
+    createdBy: { type: String, required: 'who mada da pizza?', trim: true },
     createdAt: { type: Date, default: Date.now, get: (createdAtVal) => dateFormat(createdAtVal) },
-    size: { type: String, default: 'Large' },
+    size: { type: String, required: true, enum: ['Personal', 'Small', 'Medium', 'Large', 'Diabetus'], default: 'Large' },
     toppings: [],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 },
